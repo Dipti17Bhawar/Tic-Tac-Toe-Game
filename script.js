@@ -28,7 +28,7 @@
       document.getElementsByClassName("cell")[index].innerText = currentPlayer;
 
       if (checkWinner()) {
-        alert(`${playerNames[currentPlayer]} Wins! 🎉`);
+        alert(`${playerNames[currentPlayer]} Wins!`);
         gameOver = true;
         return;
       }
