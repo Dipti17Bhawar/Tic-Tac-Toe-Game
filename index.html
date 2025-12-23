@@ -1,41 +1,40 @@
 <!DOCTYPE html>
-<html >
+<html>
 <head>
   <title>Tic Tac Toe</title>
-   <link rel="stylesheet" href="style.css">
-  </head>
+</head>
+
 <body>
 
-  <div class="setup">
-    <h2>Game Setup</h2>
-    <input id="p1Name" placeholder="Player 1 Name">
-    <input id="p2Name" placeholder="Player 2 Name">
-
-    <select id="p1Symbol">
-      <option value="X">Player 1: X</option>
-      <option value="O">Player 1: O</option>
-    </select>
-
-    <button onclick="startGame()">Start Game</button>
-  </div>
-    <div class="game hidden">
-    <h2 id="status"></h2>
-
-    <div class="board">
-      <div class="cell" onclick="play(0)"></div>
-      <div class="cell" onclick="play(1)"></div>
-      <div class="cell" onclick="play(2)"></div>
-      <div class="cell" onclick="play(3)"></div>
-      <div class="cell" onclick="play(4)"></div>
-      <div class="cell" onclick="play(5)"></div>
-      <div class="cell" onclick="play(6)"></div>
-      <div class="cell" onclick="play(7)"></div>
-      <div class="cell" onclick="play(8)"></div>
+  <div class="container">
+    <div id="playerInput">
+      <h1>Tic Tac Toe</h1>
+      <div class="input-box">
+        <input type="text" id="player1" placeholder="Player 1 Name (X)">
+        <input type="text" id="player2" placeholder="Player 2 Name (O)">
+      </div>
+      <button class="start-btn" onclick="startGame()">Start Game</button>
     </div>
 
-    <button onclick="resetGame()">Restart</button>
-  </div>
+  
+    <div class="game-section" id="gameSection">
+      <p class="current-player" id="currentPlayer"></p>
 
-  <script src="script.js"></script>
-</body>
+      <div class="game">
+        <div class="cell" onclick="makeMove(0)"></div>
+        <div class="cell" onclick="makeMove(1)"></div>
+        <div class="cell" onclick="makeMove(2)"></div>
+        <div class="cell" onclick="makeMove(3)"></div>
+        <div class="cell" onclick="makeMove(4)"></div>
+        <div class="cell" onclick="makeMove(5)"></div>
+        <div class="cell" onclick="makeMove(6)"></div>
+        <div class="cell" onclick="makeMove(7)"></div>
+        <div class="cell" onclick="makeMove(8)"></div>
+      </div>
+
+      <button class="reset" onclick="resetGame()">Reset</button>
+    </div>
+
+  </div>
+  </body>
 </html>
