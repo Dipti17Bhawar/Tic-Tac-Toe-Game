@@ -1,85 +1,64 @@
-const board = [-1, -1, -1, -1, -1, -1, -1, -1, -1];
-      let currentPlayer = "Player1";
+ let board = Array(9).fill("");
+    let currentPlayer = "X";
+    let gameOver = false;
+    let playerNames = {};
 
-      const renderBoard = () => {
-        const allBoxes = document.querySelectorAll(".cell");
-        allBoxes.forEach((box, index) => {
-          if (board[index] === "Player2") {
-            box.innerHTML = '<img class="player" src="player2.png" alt="X" />';
-          } else if (board[index] === "Player1") {
-            box.innerHTML = '<img class="player" src="player1.png" alt="O" />';
-          } else {
-            box.innerHTML = "";
-          }
-        });
-      };
-      renderBoard();
+    const winPatterns = [
+      [0,1,2],[3,4,5],[6,7,8],
+      [0,3,6],[1,4,7],[2,5,8],
+      [0,4,8],[2,4,6]
+    ];
 
-      const makeMove = (index) => {
-        if (board[index] !== -1) {
-          alert("Invalid Move");
-          return;
-        }
+    function startGame() {
+      const p1 = document.getElementById("player1").value || "Player 1";
+      const p2 = document.getElementById("player2").value || "Player 2";
 
-        board[index] = currentPlayer;
+      playerNames = { X: p1, O: p2 };
 
-        if (currentPlayer === "Player1") {
-          currentPlayer = "Player2";
-        } else {
-          currentPlayer = "Player1";
-        }
-        const currentPlayerElement = document.getElementById("current-player");
-        currentPlayerElement.innerText = `Current Player: ${currentPlayer}`;
-        renderBoard();
-        checkWinner();
-      };
+      document.getElementById("playerInput").style.display = "none";
+      document.getElementById("gameSection").style.display = "block";
 
-      function resetBoard() {
-        board.fill(-1);
-        renderBoard();
+      updateCurrentPlayer();
+    }
+
+    function makeMove(index) {
+      if (board[index] !== "" || gameOver) return;
+
+      board[index] = currentPlayer;
+      document.getElementsByClassName("cell")[index].innerText = currentPlayer;
+
+      if (checkWinner()) {
+        alert(`${playerNames[currentPlayer]} Wins! 🎉`);
+        gameOver = true;
+        return;
       }
 
-      function isPlayerPresent(places, player) {
-        const [a, b, c] = places;
-        return (
-          board[a] === player && board[b] === player && board[c] === player
-        );
+      if (board.every(cell => cell !== "")) {
+        alert("It's a Draw!");
+        gameOver = true;
+        return;
       }
 
-      function checkWinner() {
-        if (isPlayerPresent([0, 1, 2], "Player1")) {
-          alert("Player1 wins");
-        } else if (isPlayerPresent([3, 4, 5], "Player1")) {
-          alert("Player1 wins");
-        } else if (isPlayerPresent([6, 7, 8], "Player1")) {
-          alert("Player1 wins");
-        } else if (isPlayerPresent([0, 4, 8], "Player1")) {
-          alert("Player1 wins");
-        } else if (isPlayerPresent([2, 4, 6], "Player1")) {
-          alert("Player1 wins");
-        } else if (isPlayerPresent([0, 3, 6], "Player1")) {
-          alert("Player1 wins");
-        } else if (isPlayerPresent([1, 4, 7], "Player1")) {
-          alert("Player1 wins");
-        } else if (isPlayerPresent([2, 5, 8], "Player1")) {
-          alert("Player1 wins");
-        }
+      currentPlayer = currentPlayer === "X" ? "O" : "X";
+      updateCurrentPlayer();
+    }
 
-        if (isPlayerPresent([0, 1, 2], "Player2")) {
-          alert("Player2 wins");
-        } else if (isPlayerPresent([3, 4, 5], "Player2")) {
-          alert("Player2 wins");
-        } else if (isPlayerPresent([6, 7, 8], "Player2")) {
-          alert("Player2 wins");
-        } else if (isPlayerPresent([0, 4, 8], "Player2")) {
-          alert("Player2 wins");
-        } else if (isPlayerPresent([2, 4, 6], "Player2")) {
-          alert("Player2 wins");
-        } else if (isPlayerPresent([0, 3, 6], "Player2")) {
-          alert("Player2 wins");
-        } else if (isPlayerPresent([1, 4, 7], "Player2")) {
-          alert("Player2 wins");
-        } else if (isPlayerPresent([2, 5, 8], "Player2")) {
-          alert("Player2 wins");
-        }
-      }
+    function updateCurrentPlayer() {
+      document.getElementById("currentPlayer").innerText =
+        `Current Player: ${playerNames[currentPlayer]} (${currentPlayer})`;
+    }
+
+    function checkWinner() {
+      return winPatterns.some(pattern =>
+        pattern.every(i => board[i] === currentPlayer)
+      );
+    }
+
+    function resetGame() {
+      board.fill("");
+      gameOver = false;
+      currentPlayer = "X";
+      updateCurrentPlayer();
+
+      document.querySelectorAll(".cell").forEach(cell => cell.innerText = "");
+    }
